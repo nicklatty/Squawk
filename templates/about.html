@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}?v={{ config[" VERSION"] }}">
+
+  <meta charset="UTF-8">
+  <title>Squawk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts: EB Garamond as Caslon alternative -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', Times, serif;
+      background: #fff;
+      color: #1a1a1a;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0px auto;
+      padding: 0em;
+    }
+
+    #main-heading-container {
+      text-align: center;
+      margin-top: 0.0em;
+      /* Make this very small */
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #1a1a1a;
+      font-size: 2.5em;
+      margin-top: 0.1em;
+      /* Minimal space above heading */
+      margin-bottom: 0.1em;
+      text-align: center;
+    }
+
+    .bio {
+      margin-top: 0.7em;
+      /* LESS space above bio */
+      margin-bottom: 2em;
+      font-size: 1.1em;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px #0002;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      object-fit: cover;
+      height: 220px;
+      background: #f5f5f5;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.045) rotate(-1deg);
+      box-shadow: 0 8px 28px #0004;
+      z-index: 2;
+    }
+
+    /* Center animal bar */
+    .animal-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      margin: 32px 0 24px 0;
+    }
+
+    .animal-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.15s;
+    }
+
+    .animal-btn img {
+      width: 54px;
+      height: 54px;
+      transition: transform 0.2s;
+    }
+
+    /* Animation for animal images */
+    @keyframes crazy-dance {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      10% {
+        transform: rotate(-15deg) scale(1.1);
+      }
+
+      20% {
+        transform: rotate(15deg) scale(1.15);
+      }
+
+      30% {
+        transform: rotate(-18deg) scale(1.13);
+      }
+
+      40% {
+        transform: rotate(18deg) scale(1.18);
+      }
+
+      50% {
+        transform: rotate(-12deg) scale(1.1);
+      }
+
+      60% {
+        transform: rotate(12deg) scale(1.12);
+      }
+
+      70% {
+        transform: rotate(-8deg) scale(1.08);
+      }
+
+      80% {
+        transform: rotate(8deg) scale(1.05);
+      }
+
+      90% {
+        transform: rotate(-4deg) scale(1.02);
+      }
+
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    .crazy-dance {
+      animation: crazy-dance 1.2s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0.5em;
+      }
+
+      .gallery {
+        gap: 10px;
+      }
+
+      .gallery img {
+        height: 130px;
+      }
+
+      .animal-bar {
+        gap: 12px;
+      }
+
+      .animal-btn img {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    <style>#main-heading {
+      color: #1a1a1a;
+      font-size: 2.5em;
+      margin-top: 0.1em;
+      margin-bottom: 0.1em;
+      text-align: center;
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', Times, serif;
+      border-right: 2px solid #333;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 7ch;
+      /* Reserves space for "Squawk" */
+      margin-left: auto;
+      margin-right: auto;
+      animation: blink-cursor 0.8s steps(1) infinite;
+      position: relative;
+    }
+
+    #main-heading .placeholder {
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes blink-cursor {
+
+      0%,
+      100% {
+        border-color: #333;
+      }
+
+      50% {
+        border-color: transparent;
+      }
+    }
+  </style>
+
+  </style>
+
+</head>
+
+<body>
+  <div class="animal-bar">
+    <button class="animal-btn" onclick="randomizeAnimal(this)">
+      <img src="{{ url_for('static', filename='animals/bear.png') }}" alt="Animal" />
+    </button>
+    <button class="animal-btn" onclick="randomizeAnimal(this)">
+      <img src="{{ url_for('static', filename='animals/rabbit.png') }}" alt="Animal" />
+    </button>
+    <button class="animal-btn" onclick="randomizeAnimal(this)">
+      <img src="{{ url_for('static', filename='animals/cat.png') }}" alt="Animal" />
+    </button>
+  </div>
+
+
+  <div class="container">
+    <div id="main-heading-container">
+      <img id="header-icon" src="{{ url_for('static', filename='icons/icon1.png') }}" alt="Site Icon"
+        style="width:164px; height:164px; display:block; margin:0 auto 0px auto; cursor:pointer; background:transparent;"
+        onclick="swapHeaderIcon()" />
+      <h1 id="main-heading"><span class="placeholder">Squawk</span></h1>
+    </div>
+
+
+    <div class="bio">
+
+    </div>
+    <div class="gallery">
+      {% for photo in photos %}
+      <img src="{{ url_for('static', filename=photo) }}" alt="Photo"
+        data-original="{{ url_for('static', filename=photo) }}"
+        data-remix="{{ url_for('static', filename=photo.replace('.', '_remix.')) }}" onclick="swapImage(this)"
+        style="transition: filter 0.2s;">
+      {% endfor %}
+    </div>
+    <script>
+      function swapImage(img) {
+        const original = img.getAttribute('data-original');
+        const remix = img.getAttribute('data-remix');
+        if (img.src.endsWith('_remix.jpg') || img.src.endsWith('_remix.png')) {
+          img.src = original;
+          img.style.filter = 'none';
+        } else {
+          img.src = remix;
+          img.style.filter = 'contrast(1.15) saturate(1.1)';
+        }
+      }
+    </script>
+
+  </div>
+
+  <script>
+    function danceAnimal(btn) {
+      const img = btn.querySelector('img');
+      img.classList.remove('crazy-dance');
+      // Force reflow for restarting animation
+      void img.offsetWidth;
+      img.classList.add('crazy-dance');
+      setTimeout(() => {
+        img.classList.remove('crazy-dance');
+      }, 1200);
+    }
+
+    function jiggleHeading() {
+      const heading = document.getElementById('main-heading');
+      heading.classList.remove('jiggle');
+      void heading.offsetWidth; // Force reflow
+      heading.classList.add('jiggle');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      jiggleHeading();
+    });
+  </script>
+
+
+  <script>
+    function swapHeaderIcon() {
+      const icon = document.getElementById('header-icon');
+      // Icon image sources
+      const icon1 = "{{ url_for('static', filename='icons/icon1.png') }}";
+      const icon2 = "{{ url_for('static', filename='icons/icon2.png') }}";
+      // Animation
+      icon.classList.remove('swap-anim');
+      void icon.offsetWidth;
+      icon.classList.add('swap-anim');
+      setTimeout(() => icon.classList.remove('swap-anim'), 220);
+      // Swap
+      if (icon.src.includes('icon1.png')) {
+        icon.src = icon2;
+      } else {
+        icon.src = icon1;
+      }
+    }
+
+  </script>
+  <script>
+    function typeWriter(element, text, speed = 560, callback = null) {
+      element.innerHTML = "";
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        } else if (callback) {
+          callback();
+        }
+      }
+      type();
+    }
+
+    window.onload = function () {
+      typeWriter(document.getElementById("main-heading"), "Squawk", 550);
+    };
+  </script>
+
+  <script>
+    const animalImages = [
+      "{{ url_for('static', filename='animals/bear.png') }}",
+      "{{ url_for('static', filename='animals/rabbit.png') }}",
+      "{{ url_for('static', filename='animals/cat.png') }}",
+      "{{ url_for('static', filename='animals/dan.png') }}",
+      "{{ url_for('static', filename='animals/carrot.png') }}",
+      "{{ url_for('static', filename='animals/foxy.png') }}",
+      "{{ url_for('static', filename='animals/ezy.png') }}",
+      "{{ url_for('static', filename='animals/elephant.png') }}",
+      "{{ url_for('static', filename='animals/buffalo.png') }}",
+      // Add more animals here if you have more
+    ];
+
+    function randomizeAnimal(btn) {
+      const img = btn.querySelector('img');
+      // Get a list of other animals, excluding the current one
+      const others = animalImages.filter(src => !img.src.endsWith(src.split('/').pop()));
+      // Pick a random one
+      const randomSrc = others[Math.floor(Math.random() * others.length)];
+      // Swap image
+      img.src = randomSrc;
+      // (Optional) Animate with jiggle
+      img.classList.remove('crazy-dance');
+      void img.offsetWidth;
+      img.classList.add('crazy-dance');
+      setTimeout(() => img.classList.remove('crazy-dance'), 1200);
+    }
+  </script>
+
+  <div
+    style="text-align:center; margin-top: 40px; color: #888; font-size: 1em; font-family: 'EB Garamond', Georgia, serif;">
+    &copy; Squawk 2025
+  </div>
+  <br>
+
+</body>
+
+</html>
