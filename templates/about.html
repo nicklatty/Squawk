@@ -209,6 +209,27 @@
         border-color: transparent;
       }
     }
+
+    #mountain-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #mountain-path {
+      stroke: #000;
+      fill: none;
+    }
+
+    @keyframes draw-mountain {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
   </style>
 
   </style>
@@ -231,6 +252,7 @@
 
   <div class="container">
     <div id="main-heading-container">
+      <svg id="mountain-svg"><path id="mountain-path" /></svg>
       <img id="header-icon" src="{{ url_for('static', filename='icons/icon1.png') }}" alt="Site Icon"
         style="width:164px; height:164px; display:block; margin:0 auto 0px auto; cursor:pointer; background:transparent;"
         onclick="swapHeaderIcon()" />
@@ -307,6 +329,29 @@
       } else {
         icon.src = icon1;
       }
+      drawMountain();
+    }
+
+    function drawMountain() {
+      const svg = document.getElementById('mountain-svg');
+      const path = document.getElementById('mountain-path');
+      const width = svg.clientWidth;
+      const height = svg.clientHeight;
+      const segments = 8;
+      const step = width / segments;
+      let d = `M0 ${height}`;
+      for (let i = 1; i <= segments; i++) {
+        const x = step * i;
+        const y = height - Math.random() * height * 0.8;
+        d += ` L${x} ${y}`;
+      }
+      path.setAttribute('d', d);
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      path.style.animation = 'none';
+      void path.offsetWidth;
+      path.style.animation = 'draw-mountain 2s linear forwards';
     }
 
   </script>
