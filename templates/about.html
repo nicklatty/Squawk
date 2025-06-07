@@ -253,9 +253,10 @@
 
   <div class="container">
     <div id="main-heading-container">
-      <svg id="mountain-svg">
+      <!-- Mountain SVG temporarily disabled -->
+      <!-- <svg id="mountain-svg">
         <path id="mountain-path" />
-      </svg>
+      </svg> -->
       <img id="header-icon" src="{{ url_for('static', filename='icons/icon1.png') }}" alt="Site Icon"
         style="width:164px; height:164px; display:block; margin:0 auto 0px auto; cursor:pointer; background:transparent;"
         onclick="swapHeaderIcon()" />
@@ -332,10 +333,10 @@
       } else {
         icon.src = icon1;
       }
-      drawMountain();
+      /* drawMountain(); */
     }
 
-    function drawMountain() {
+    /*function drawMountain() {
       const svg = document.getElementById('mountain-svg');
       const path = document.getElementById('mountain-path');
       const width = svg.clientWidth;
@@ -355,7 +356,7 @@
       path.style.animation = 'none';
       void path.offsetWidth;
       path.style.animation = 'draw-mountain 2s linear forwards';
-    }
+    }*/
 
   </script>
   <script>
