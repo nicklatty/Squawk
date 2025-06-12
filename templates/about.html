@@ -231,6 +231,12 @@
         stroke-dashoffset: 0;
       }
     }
+
+    #construction-banner {
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', Times, serif;
+      text-align: center;
+      margin-top: 1em;
+    }
   </style>
 
   </style>
@@ -238,6 +244,7 @@
 </head>
 
 <body>
+  <div id="construction-banner"></div>
   <div class="animal-bar">
     <button class="animal-btn" onclick="randomizeAnimal(this)">
       <img src="{{ url_for('static', filename='animals/bear.png') }}" alt="Animal" />
@@ -377,6 +384,7 @@
 
     window.onload = function () {
       typeWriter(document.getElementById("main-heading"), "Squawk", 550);
+      typeWriter(document.getElementById("construction-banner"), "This bad boy is currently under construction...");
     };
   </script>
 
