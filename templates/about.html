@@ -294,6 +294,17 @@
           img.style.filter = 'contrast(1.15) saturate(1.1)';
         }
       }
+
+      // Preload the remix versions of gallery images so swapping is seamless
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.gallery img').forEach(imgEl => {
+          const remixSrc = imgEl.getAttribute('data-remix');
+          if (remixSrc) {
+            const preloadImg = new Image();
+            preloadImg.src = remixSrc;
+          }
+        });
+      });
     </script>
 
   </div>
